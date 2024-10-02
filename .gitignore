@@ -1,0 +1,12 @@
+# Ignore the run file
+run
+
+# Ignore the wwwroot folder
+wwwroot/
+
+# Ignore the bin folder
+bin/
+
+# Ignore the obj folder
+obj/
+

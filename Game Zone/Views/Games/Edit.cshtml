@@ -1,0 +1,70 @@
+﻿@model EditGameVM
+@{
+    ViewData["Title"] = "Edit";
+}
+<h5 class="btn btn-secondary btn-lg mt-3">
+   
+    Edit Game
+</h5>
+<form method="post" asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                <label asp-for="Name" class="form-label mt-4"></label>
+                <input asp-for="Name" class="form-control" placeholder="Enter Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="CategoryId" class="form-label mt-4"></label>
+                <select asp-for="CategoryId" asp-items="@Model.Categories" class="form-select">
+                    <option value="">-- Select item --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="SelectedDevices" class="form-label mt-4"></label>
+                <select asp-for="SelectedDevices" asp-items="@Model.Devices" multiple="" class="form-select">
+                    <option value="">-- Select item --</option>
+                </select>
+                <span asp-validation-for="SelectedDevices" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Cover" class="form-label mt-4"></label>
+                <input id="Cover" asp-for="Cover"  class="form-control" type="file"
+                       data-rule-extension="@FileSetting.AllowedExtensions.Replace(".",string.Empty)"
+                       data-msg-extension="Not Allowed extention"
+                       data-rule-filesize="@FileSetting.MaxFilesSizesInBytes"
+                       data-msg-filesize="max size of cover is 1MB">
+                <small class="form-text text-muted">Only .jpg | .jpeg | .png files are allowd and max size 1MB .</small>
+                <span asp-validation-for="Cover" class="text-danger d-block"></span>
+            </div>
+            <div>
+                <label asp-for="Description" class="form-label mt-4"></label>
+                <input asp-for="Description" class="form-control" placeholder="Enter Description">
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </div>
+        <div class="col-md-6 d-flex justify-content-center pt-4 overflow-hidden">
+            <img class="cover-preview " src="@FileSetting.ImagePath/@Model.CurrentCover") alt="Cover" />
+        </div>
+    </div>
+
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script>
+        $.validator.addMethod("filesize", function (value, element, param) {
+            return this.optional(element) || element.files[0].size <= param;
+        });
+
+        $(document).ready(function () {
+            $('#Cover').on('change', function () {
+                $('.cover-preview').attr('src', window.URL.createObjectURL(this.files[0])).removeClass('d-none');
+
+            });
+        });
+    </script>
+}
